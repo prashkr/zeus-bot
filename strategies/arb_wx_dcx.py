@@ -42,7 +42,7 @@ def compute_arb(market):
     dcx_lowest_ask, dcx_highest_bid = get_spread_prices(dcx, dcx_symbol, dcx_utils)
     # print(f"dcx: {(dcx_lowest_ask.price, dcx_highest_bid.price)}")
 
-    if wx_highest_bid.price < dcx_lowest_ask.price:
+    if wx_highest_bid.price > dcx_lowest_ask.price:
         max_arb_quantity = min(wx_highest_bid.quantity, dcx_lowest_ask.quantity)
         delta_price = wx_highest_bid.price - dcx_lowest_ask.price
         potential_profit = delta_price * max_arb_quantity
