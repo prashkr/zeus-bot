@@ -36,15 +36,34 @@ def compute_arb(market):
     # get wazirx price
     wx_lowest_ask, wx_highest_bid = get_spread_prices(wx, wx_symbol, wx_utils)
     # print(f"wx: {(wx_lowest_ask.price, wx_highest_bid.price)}")
+
     # get dcx price
     dcx_lowest_ask, dcx_highest_bid = get_spread_prices(dcx, dcx_symbol, dcx_utils)
     # print(f"dcx: {(dcx_lowest_ask.price, dcx_highest_bid.price)}")
 
     if wx_highest_bid.price > dcx_lowest_ask.price:
-        print(f'arb opportunity: in market {market}: Buy @WazirX for {wx_highest_bid.price} and Sell @CoinDCX for {dcx_lowest_ask.price}. Max arb quantity: {min(wx_highest_bid.quantity, dcx_lowest_ask.quantity)}')
+        max_arb_quantity = min(wx_highest_bid.quantity, dcx_lowest_ask.quantity)
+        delta_price = wx_highest_bid.price - dcx_lowest_ask.price
+        potential_profit = delta_price * max_arb_quantity
+        print(f'Arb Opportunity in market: {market}')
+        print(f'\tBuy @CoinDCX for {dcx_lowest_ask.price}')
+        print(f'\tSell @WazirX for {wx_highest_bid.price}')
+        print(f'\tDelta Price: {delta_price}')
+        print(f'\tMax arb quantity: {max_arb_quantity}')
+        print(f'\tPotential profit: {potential_profit}')
+        print("\n\n")
 
     if dcx_highest_bid.price > wx_lowest_ask.price:
-        print(f'arb opportunity: in market {market}: Buy @CoinDCX for {dcx_highest_bid.price} and Sell @WazirX for {wx_lowest_ask.price}. Max arb quantity: {min(dcx_highest_bid.quantity, wx_lowest_ask.quantity)}')
+        max_arb_quantity = min(dcx_highest_bid.quantity, wx_lowest_ask.quantity)
+        delta_price = dcx_highest_bid.price - wx_lowest_ask.price
+        potential_profit = delta_price * max_arb_quantity
+        print(f'Arb Opportunity in market: {market}')
+        print(f'\tBuy @WazirX for {wx_lowest_ask.price}')
+        print(f'\tSell @CoinDCX for {dcx_highest_bid.price}')
+        print(f'\tDelta Price: {delta_price}')
+        print(f'\tMax arb quantity: {max_arb_quantity}')
+        print(f'\tPotential profit: {potential_profit}')
+        print("\n\n")
 
 
 if __name__ == '__main__':
