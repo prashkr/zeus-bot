@@ -4,6 +4,7 @@ from wazirx import utils as wx_utils
 from coindcx import utils as dcx_utils
 from utils.orderbook import Orderbook
 from utils.constants import market_symbols
+import datetime
 
 
 dcx = CoinDCX()
@@ -41,11 +42,12 @@ def compute_arb(market):
     dcx_lowest_ask, dcx_highest_bid = get_spread_prices(dcx, dcx_symbol, dcx_utils)
     # print(f"dcx: {(dcx_lowest_ask.price, dcx_highest_bid.price)}")
 
-    if wx_highest_bid.price > dcx_lowest_ask.price:
+    if wx_highest_bid.price < dcx_lowest_ask.price:
         max_arb_quantity = min(wx_highest_bid.quantity, dcx_lowest_ask.quantity)
         delta_price = wx_highest_bid.price - dcx_lowest_ask.price
         potential_profit = delta_price * max_arb_quantity
         print(f'Arb Opportunity in market: {market}')
+        print(f'\tTime: {datetime.datetime.now()}')
         print(f'\tBuy @CoinDCX for {dcx_lowest_ask.price}')
         print(f'\tSell @WazirX for {wx_highest_bid.price}')
         print(f'\tDelta Price: {delta_price}')
@@ -58,6 +60,7 @@ def compute_arb(market):
         delta_price = dcx_highest_bid.price - wx_lowest_ask.price
         potential_profit = delta_price * max_arb_quantity
         print(f'Arb Opportunity in market: {market}')
+        print(f'\tTime: {datetime.datetime.now()}')
         print(f'\tBuy @WazirX for {wx_lowest_ask.price}')
         print(f'\tSell @CoinDCX for {dcx_highest_bid.price}')
         print(f'\tDelta Price: {delta_price}')
